@@ -673,8 +673,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cube: {fileID: 319098816}
   sphere: {fileID: 560079987}
-  objLimit: 0
   mousePos: {x: 0, y: 0, z: 0}
+  mainCamera: {fileID: 330585545}
+  sphereDistance: 0
+  sphereB: 0
 --- !u!4 &879401824
 Transform:
   m_ObjectHideFlags: 0
