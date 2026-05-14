@@ -15,8 +15,8 @@ public class Raton : MonoBehaviour
     [SerializeField]bool cube1B;
     GameObject current;
     RaycastHit hit;
-    [SerializeField]
-    float normal;
+    [SerializeField]float angle;
+    [SerializeField]float cos;
     CollisionFunctions collisions;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -49,9 +49,9 @@ public class Raton : MonoBehaviour
     {
         if (hit.transform.gameObject.CompareTag("Cube") && current == null)
         {
-            Vector3 vector = Vector3.Cross(hit.transform.up, Vector3.up);
-            normal = vector.normalized.y;
-            if (normal == 1 || normal == 0)
+            angle = Vector3.Dot(hit.transform.up, Vector3.up);
+            cos = Mathf.Cos(angle);
+            if (angle == 1 || angle == 0)
             {
                 if(collisions.PointToAABB())
                 {
