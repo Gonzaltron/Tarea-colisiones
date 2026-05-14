@@ -28,19 +28,8 @@ public class CollisionFunctions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            sphereB = false;
-            cubeB = false;
-        }
-        
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out RaycastHit hit))
-        {
-            transform.position = hit.point;
-        } 
         PointToAABB();
-        PointToCircle();
+        //PointToCircle();
         PointToOBB();
     }
 
@@ -59,17 +48,12 @@ public class CollisionFunctions : MonoBehaviour
             }
         }
     }
-
+/*
     void PointToCircle()
     {
         sphereDistance = Mathf.Sqrt((transform.position.x - sphere.transform.position.x) * (transform.position.x - sphere.transform.position.x) + (transform.position.y - sphere.transform.position.y) * (transform.position.y - sphere.transform.position.y));
-        if(sphereDistance < sphereTolerance)
-        {
-            sphereB = true;
-            sphere.transform.position = new Vector3 (transform.position.x, transform.position.y, 0);
-        }
     }
-
+*/
     void PointToOBB()
     {
         Vector3 delta = transform.position - rCube.transform.position;
