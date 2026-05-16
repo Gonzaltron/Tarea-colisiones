@@ -16,6 +16,11 @@ public class Raton : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
+        if (mainCamera == null)
+        {
+            return;
+        }
+
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
@@ -27,11 +32,14 @@ public class Raton : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Mouse0))
         {
-            if(current == null)
+            if(current == null && hit.transform != null)
             {
                 current = hit.transform.gameObject;
             }
-            current.transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            if(current != null)
+            {
+                current.transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            }
         }
     }
 }

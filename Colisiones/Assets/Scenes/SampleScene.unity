@@ -545,6 +545,7 @@ GameObject:
   - component: {fileID: 879401824}
   - component: {fileID: 879401825}
   - component: {fileID: 879401826}
+  - component: {fileID: 879401827}
   m_Layer: 0
   m_Name: manager
   m_TagString: Untagged
@@ -579,13 +580,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5b123220f8fab040920bc6946f507f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube: {fileID: 1705327082}
-  sphere: {fileID: 560079987}
-  rCube: {fileID: 1309200815}
-  mousePos: {x: 0, y: 0, z: 0}
-  mainCamera: {fileID: 330585545}
-  sphereDistance: 0
-  sphereB: 0
 --- !u!114 &879401826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,12 +592,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b22b779a6430a4aa1c7be60f381c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube: {fileID: 1705327082}
-  sphere: {fileID: 560079987}
   mainCamera: {fileID: 330585545}
-  rCube: {fileID: 1309200815}
-  angle: 0
-  cos: 0
+--- !u!114 &879401827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879401822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e295380111682ba49baad7173d14dba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CustomColliders:
+  - {fileID: 1705327082}
+  - {fileID: 560079987}
+  - {fileID: 1309200815}
+  mainCamera: {fileID: 330585545}
+  collisionFunctions: {fileID: 0}
+  rotSpeed: 5000
 --- !u!1 &1309200815
 GameObject:
   m_ObjectHideFlags: 0

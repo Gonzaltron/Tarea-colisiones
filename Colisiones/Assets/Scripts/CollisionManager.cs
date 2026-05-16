@@ -3,16 +3,17 @@ using UnityEngine;
 
 public class CollisionManager : MonoBehaviour
 {
-    [SerializeField] List<GameObject> CustomColliders = new List<GameObject>();
+    public List<GameObject> CustomColliders = new List<GameObject>();
     [SerializeField] Camera mainCamera;
     [SerializeField] CollisionFunctions collisionFunctions;
     RaycastHit hit;
     Ray ray;
+    [SerializeField]float rotSpeed;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        collisionFunctions = GetComponent<CollisionFunctions>();
     }
 
     // Update is called once per frame
@@ -21,82 +22,122 @@ public class CollisionManager : MonoBehaviour
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(ray, out hit))
         {
-            if(hit.transform.gameObject.GetComponent<MeshFilter>().mesh.name == "Cube")
+            if(hit.transform.gameObject.GetComponent<MeshFilter>().mesh.name.Contains("Cube"))
             {
                 
                 foreach(GameObject obj in CustomColliders)
                 {
-                    float angle = Vector3.Dot(hit.transform.up, Vector3.up);
-                    float angle1 = Vector3.Dot(obj.transform.up, Vector3.up);
-                    float cos = Mathf.Cos(angle);
-                    float cos1 = Mathf.Cos(angle1);
+                    float dot = Vector3.Dot(hit.transform.up.normalized, Vector3.up);
+                    float dot1 = Vector3.Dot(obj.transform.up.normalized, Vector3.up);
+                    bool dotIsAxisAligned = Mathf.Approximately(Mathf.Abs(dot), 1f) || Mathf.Approximately(dot, 0f);
+                    bool dot1IsAxisAligned = Mathf.Approximately(Mathf.Abs(dot1), 1f) || Mathf.Approximately(dot1, 0f);
                     if(obj == hit.transform.gameObject)
                     {
                         continue;
                     }
-                    else if(obj.GetComponent<MeshFilter>().mesh.name == "Cube")
+                    else if(obj.GetComponent<MeshFilter>().mesh.name.Contains("Cube"))
                     {
                         
-                        if(cos == 1 || cos == -1 || cos == 0)
+                        if(dotIsAxisAligned)
                         {
-                            if(cos1 == 1 || cos1 == -1 || cos1 == 0)
+                            if(dot1IsAxisAligned)
                             {
                                 if(collisionFunctions.ABBToABB(hit.transform.gameObject, obj))
                                 {
-                                    Debug.Log("Collision between " + hit.transform.gameObject.name + " and " + obj.name);
+                                    obj.GetComponent<Renderer>().material.color = Color.red;
+                                    hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                                }
+                                else
+                                {
+                                    obj.GetComponent<Renderer>().material.color = Color.white;
+                                    hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.white;
                                 }
                             }
                             else if(collisionFunctions.ABBToOBB(hit.transform.gameObject, obj))
                             {
-                                Debug.Log("Collision between " + hit.transform.gameObject.name + " and " + obj.name);
+                                obj.GetComponent<Renderer>().material.color = Color.red;
+                                hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                            }
+                            else{
+                                obj.GetComponent<Renderer>().material.color = Color.white;
+                                hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.white;
                             }
                         }
 
                     }
-                    else if(obj.GetComponent<MeshFilter>().mesh.name == "Sphere")
+                    else if(obj.GetComponent<MeshFilter>().mesh.name.Contains("Sphere"))
                     {
-                        if(cos == 1 || cos == -1 || cos == 0 && collisionFunctions.CircleToABB(hit.transform.gameObject, obj))
+                        if(dotIsAxisAligned && collisionFunctions.CircleToABB(hit.transform.gameObject, obj))
                         {
-                            Debug.Log("Collision between " + hit.transform.gameObject.name + " and " + obj.name);
+                            obj.GetComponent<Renderer>().material.color = Color.red;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.green;
                         }
                         else if(collisionFunctions.CircleToOBB(hit.transform.gameObject, obj, obj.transform.localScale.x * 0.5f))
                         {
-                            Debug.Log("Collision between " + hit.transform.gameObject.name + " and " + obj.name);
+                            obj.GetComponent<Renderer>().material.color = Color.red;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                        }
+                        else 
+                        {
+                            obj.GetComponent<Renderer>().material.color = Color.white;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.white;
                         }
                     }
                 }
             }
-            else if(hit.transform.gameObject.GetComponent<MeshFilter>().mesh.name == "Sphere")
+            else if(hit.transform.gameObject.GetComponent<MeshFilter>().mesh.name.Contains("Sphere"))
             {
                 foreach(GameObject obj in CustomColliders)
                 {
-                    float angle = Vector3.Dot(hit.transform.up, Vector3.up);
-                    float angle1 = Vector3.Dot(obj.transform.up, Vector3.up);
-                    float cos = Mathf.Cos(angle);
-                    float cos1 = Mathf.Cos(angle1);
+                    float dot = Vector3.Dot(hit.transform.up.normalized, Vector3.up);
+                    float dot1 = Vector3.Dot(obj.transform.up.normalized, Vector3.up);
+                    bool dotIsAxisAligned = Mathf.Approximately(Mathf.Abs(dot), 1f) || Mathf.Approximately(dot, 0f);
+                    bool dot1IsAxisAligned = Mathf.Approximately(Mathf.Abs(dot1), 1f) || Mathf.Approximately(dot1, 0f);
                     if(obj == hit.transform.gameObject)
                     {
                         continue;
                     }
-                    else if(obj.GetComponent<MeshFilter>().mesh.name == "Cube")
+                    else if(obj.GetComponent<MeshFilter>().mesh.name.Contains("Cube"))
                     {
-                        if(cos == 1 || cos == -1 || cos == 0 && collisionFunctions.CircleToABB(obj, hit.transform.gameObject))
+                        if(dotIsAxisAligned && collisionFunctions.CircleToABB(obj, hit.transform.gameObject))
                         {
-                            Debug.Log("Collision between " + hit.transform.gameObject.name + " and " + obj.name);
+                            obj.GetComponent<Renderer>().material.color = Color.red;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.green;
                         }
                         else if(collisionFunctions.CircleToOBB(obj, hit.transform.gameObject, hit.transform.localScale.x * 0.5f))
                         {
-                            Debug.Log("Collision between " + hit.transform.gameObject.name + " and " + obj.name);
+                            obj.GetComponent<Renderer>().material.color = Color.red;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.green;
+                        }
+                        else
+                        {
+                            obj.GetComponent<Renderer>().material.color = Color.white;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.white;
                         }
                     }
-                    else if(obj.GetComponent<MeshFilter>().mesh.name == "Sphere")
+                    else if(obj.GetComponent<MeshFilter>().mesh.name.Contains("Sphere"))
                     {
                         if(collisionFunctions.CircleToCircle(hit.transform.gameObject, obj, hit.transform.localScale.x * 0.5f))
                         {
-                            Debug.Log("Collision between " + hit.transform.gameObject.name + " and " + obj.name);
+                           obj.GetComponent<Renderer>().material.color = Color.red;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.green;
                         }
                     }
+                    else
+                    {
+                        obj.GetComponent<Renderer>().material.color = Color.white;
+                        hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.white;
+                    }
                 }
+            }
+
+            if (Input.GetKey(KeyCode.Q))
+            {
+                hit.transform.Rotate(0f, 0f, rotSpeed * Time.deltaTime, Space.Self);
+            }
+            else if (Input.GetKey(KeyCode.E))
+            {
+                hit.transform.Rotate(0f, 0f, -rotSpeed * Time.deltaTime, Space.Self);
             }
         }
     }
